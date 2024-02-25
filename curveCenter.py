@@ -1,12 +1,14 @@
-from alg1 import *
 from curveDetection import *
-import numpy as np
+
 
 def curveCenter(frame):
+   # attempt to process canny frame as well as contours
    try:
       lineFrame,nayFrame=midnight(frame)
 
       return lineFrame, nayFrame
+
+   # if not, return raw frame for display
    except:
       lineFrame=midnight(frame)
 

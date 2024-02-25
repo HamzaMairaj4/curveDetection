@@ -1,36 +1,37 @@
-from centerLine import *
 from curveCenter import *
 import cv2 as cv
-import numpy as np
 
 def videoStreamProcess(port):
-    #open video
+    # open video
     capture = cv.VideoCapture(port)
 
 
     while True:
-        #capture frame
+        # capture frame
         ret, frame = capture.read()
+
+        # establish universalised mask (always center frame)
         h, w, channel=frame.shape
         quarH = h//4
         quarW = w//4
         upperLeft = (quarW,quarH)
         bottomRight = (3*quarW,3*quarH)
 
-        #if frame is read correctly ret is True
-
+        # if frame isn't read correctly, kill process
         if not ret:
             print("Can't receive frame (stream end?). Exiting ...")
             break
 
-        # mask
+        # extract mask from frame
         rectFrame = frame[upperLeft[1]: bottomRight[1], upperLeft[0]:bottomRight[0]]
 
-        #process frame
+        # process frame
         procFrame = rectFrame
         try:
+            # if canny detects lines
             procFrame, nayFrame = curveCenter(rectFrame)
         except:
+            # if canny doesnt detect lines
             procFrame=curveCenter(rectFrame)
 
 
@@ -42,7 +43,7 @@ def videoStreamProcess(port):
         except:
             pass
 
-        #Display the resulting frame
+        # Display the resulting frame
         cv.imshow('frame', frame)
         try:
             cv.imshow('nay',nayFrame)

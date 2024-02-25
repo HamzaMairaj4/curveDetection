@@ -1,18 +1,23 @@
-from alg1 import *
-import cv2 as cv
-import numpy as np
+# detect center parallel contours
+def assimilate(contours):
+   # Make sure we have enough contours to process
+   if len(contours) >= 2:
+      # Which ever contour is smaller, thats how many points
+      minLength = min(len(contours[0]), len(contours[1]))
 
-#detect center parallel contours
-def assimilate(frame, contours, hier):
-   #convert contours to a list
-   contList=list(contours)
+      # List of points for the middle contour
+      averagePoints = []
 
-   #sort contList based on contourArea
-   contList.sort(key=cv.contourAreas())
+      for i in range(minLength):
+         # For all points in the contours, find their middle coordinates and add them to the list of average points
+         x_avg = int((contours[0][i][0][0] + contours[1][i][0][0]) / 2)
+         y_avg = int((contours[0][i][0][1] + contours[1][i][0][1]) / 2)
+         averagePoints.append((x_avg, y_avg))
 
-   #Establish maximum curves
-   john=contList[-1]
-   jeff=contList[-2]
+      # Return the midline
+      return averagePoints
+   else:
+      pass
 
-   print(john)
-   print(jeff)
+
+
